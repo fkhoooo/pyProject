@@ -1,4 +1,6 @@
 from pathlib import Path
+from pickle import GLOBAL, TRUE
+from re import T
 import shutil
 import hashlib
 import os
@@ -57,16 +59,23 @@ repo.remote().pull()
 print("更新完成..")
 logPath= Path.cwd() / "log.txt"
 saveData = logPath.read_text()
+
 isJsonUpdate = False
 updateTimeList = []
 addlist = []
 updatelist = []
-if saveData == "":
-    lastTime  = 0
-else:
-    saveTime = saveData.split("\n")[0]
-    timeList = time.strptime(saveTime,"%Y-%m-%d %H:%M:%S")
-    lastTime = int(time.mktime(timeList))
+lastTime = 0
+
+def start():
+    global lastTime
+    if saveData == "":
+        lastTime  = 0
+    else:
+        saveTime = saveData.split("\n")[0]
+        timeList = time.strptime(saveTime,"%Y-%m-%d %H:%M:%S")
+        lastTime = int(time.mktime(timeList))
+    doCopyFile(srcUrl)
+
 def doCopyFile(data):
     srcPath = Path(data)
     print("对比资源.......")
@@ -163,7 +172,7 @@ def getMD5(path):
             d5.update(content)   # 每次读取一部分，然后添加到hash对象里
     return d5.hexdigest()        # 打印16进制的hash值
 if __name__ == '__main__':
-    doCopyFile(srcUrl)
+    start()
 
 
     
