@@ -1,3 +1,4 @@
-2022-02-23 15:15:29
-UPDATE:F:\h5\zgh5\resource\json\config\item.xls
-UPDATE:F:\h5\zgh5\resource\json\config\rbyz.xlsx
+2022-02-24 11:50:25
+UPDATE:F:\h5\zgh5\resource\json\config\help.xls
+UPDATE:F:\h5\zgh5\resource\json\config\kapai.xls
+UPDATE:F:\h5\zgh5\resource\json\config\Language2.xls
