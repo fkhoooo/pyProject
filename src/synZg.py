@@ -49,6 +49,8 @@ filterList = [
      r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\activity\thank",
      r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\dress\ui"
 ]
+
+print(333)
 print("更新资源..")
 repo =Repo("E:\zg\client\kingrbyz\.git") #git文件的路径
 repo.remote().pull()
