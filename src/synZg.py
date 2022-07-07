@@ -10,8 +10,9 @@ import subprocess
 # 相同目录结构同步
 srcUrl = r"E:\zg\client\kingrbyz"
 # 需要同步目录
+jsonUrl = r"E:\kingrbyz\config"
 srcList =[
-    r"E:\zg\client\kingrbyz\config",
+    r"E:\kingrbyz\config",
     r"E:\zg\client\kingrbyz\assets\res\dynamicSkin",
     r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\dress",
     r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\beauty",
@@ -55,10 +56,14 @@ filterList = [
      r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\activity\thank",
      r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\dress\ui"
 ]
-print("更新资源..")
+print("更新表格..")
+repo =Repo("E:\kingrbyz\.git") #git文件的路径
+repo.remote().pull()
+print("表格完成..")
+print("更新美术资源..")
 repo =Repo("E:\zg\client\kingrbyz\.git") #git文件的路径
 repo.remote().pull()
-print("更新完成..")
+print("美术更新完成..")
 logPath= Path.cwd() / "log.txt"
 saveData = logPath.read_text()
 
@@ -76,7 +81,23 @@ def start():
         saveTime = saveData.split("\n")[0]
         timeList = time.strptime(saveTime,"%Y-%m-%d %H:%M:%S")
         lastTime = int(time.mktime(timeList))
+    doCopyJson()
     doCopyFile(srcUrl)
+    end()
+
+
+def doCopyJson():
+    srcPath = Path(jsonUrl)
+    for i in srcPath.glob("**/*"):
+        if i.suffix != ".xls":
+            continue
+        if i.is_file():
+            if i.stat().st_mtime < lastTime:
+                continue
+            desData = getDesPath(i)
+            desPath = desData[0]
+            synchFile(Path(i),desPath)
+
 
 def doCopyFile(data):
     srcPath = Path(data)
@@ -108,6 +129,26 @@ def doCopyFile(data):
             if j.is_dir():
                   srcPath = Path(str(j).replace(desList[i],srcList[i]))
                   os.utime(str(j),(srcPath.stat().st_atime,srcPath.stat().st_mtime))
+
+def synchFile(srcPath:Path,desPath:Path):
+     if str(desPath.parent) == r"F:\h5\zgh5\resource\json\config":
+        global isJsonUpdate
+        isJsonUpdate = True
+     if(not desPath.exists()):
+        shutil.copy2(str(srcPath),str(desPath))
+        print("新增加:",str(desPath))
+        addlist.append("ADD:" + str(desPath))
+     else:
+        #  if srcPath.stat().st_mtime > desPath.stat().st_mtime: #修改时间对比
+            #  if getMD5(str(srcPath)) != getMD5(str(desPath)):
+                shutil.copy2(str(srcPath),str(desPath))
+                print("更新:",str(desPath))
+                updatelist.append("UPDATE:" + str(desPath))
+            #  else :
+                #虽然时间不同但是文件内容没变. 更改当前文件时间为系统时间 防止下次对比MD5
+                #  os.utime(str(desPath))
+        
+def end():
     addlist.extend(updatelist)
     if len(addlist) <= 0:
         print("没有可同步的资源")
@@ -131,24 +172,6 @@ def doCopyFile(data):
     logTx = otherStyleTime + "\n" + log1
     logPath.write_text(logTx)
     print("资源同步完成-------") 
-
-def synchFile(srcPath:Path,desPath:Path):
-     if str(desPath.parent) == r"F:\h5\zgh5\resource\json\config":
-        global isJsonUpdate
-        isJsonUpdate = True
-     if(not desPath.exists()):
-        shutil.copy2(str(srcPath),str(desPath))
-        print("新增加:",str(desPath))
-        addlist.append("ADD:" + str(desPath))
-     else:
-        #  if srcPath.stat().st_mtime > desPath.stat().st_mtime: #修改时间对比
-             if getMD5(str(srcPath)) != getMD5(desPath):
-                shutil.copy2(str(srcPath),str(desPath))
-                print("更新:",str(desPath))
-                updatelist.append("UPDATE:" + str(desPath))
-            #  else :
-                #虽然时间不同但是文件内容没变. 更改当前文件时间为系统时间 防止下次对比MD5
-                #  os.utime(str(desPath))
 
 def filterFile(data,list):
     for i in data.parents:
