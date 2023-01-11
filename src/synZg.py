@@ -23,7 +23,8 @@ srcList =[
     r"E:\zg\client\kingrbyz\assets\act\act580\res\act580assetsRes\horseName",
     r"E:\zg\client\kingrbyz\assets\res\plist",
     r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\friends\emotion",
-    r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\shenbing"
+    r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\shenbing",
+    r"E:\zg\client\kingrbyz\assets\stu\assetsRes\res\disciple\part",
     ]
 
 # 目标目录
@@ -39,7 +40,8 @@ desList = [
     r"F:\h5\zgh5\resource\assets\ui\horse\name",
     r"F:\h5\zgh5\resource\assets\ui\player\plist",
     r"F:\h5\zgh5\resource\assets\icon\friends\emotion",
-    r"F:\h5\zgh5\resource\assets\ui\shenbing"
+    r"F:\h5\zgh5\resource\assets\ui\shenbing",
+    r"F:\h5\zgh5\resource\assets\icon\disciple\part",
     ]
 filterList = [
      r"E:\zg\client\kingrbyz\assets\res\dynamicSkin\robe",
